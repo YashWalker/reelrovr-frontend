@@ -103,7 +103,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="fixed bottom-6 text-muted text-sm">
-        Mr. Walker 
+         ReelRovr © 2026
       </footer>
     </main>
   );
