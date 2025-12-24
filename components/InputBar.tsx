@@ -26,7 +26,7 @@ export default function InputBar({ onExtract, isLoading }: InputBarProps) {
                 </div>
                 <input
                     type="text"
-                    className="block w-full pl-11 pr-32 py-5 bg-card border-2 border-muted/10 rounded-2xl 
+                    className="block w-full pl-11 pr-48 py-5 bg-card border-2 border-muted/10 rounded-2xl 
                      text-foreground placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 
                      transition-all shadow-xl hover:shadow-2xl hover:border-muted/30 text-lg"
                     placeholder="Paste Instagram Reel or Post link..."
