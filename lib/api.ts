@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use environment variable or fallback to production backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://smooth-vonnie-yashwalker-18f1a4df.koyeb.app";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://smooth-vonnie-yashwalker-18f1a4df.koyeb.app";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
