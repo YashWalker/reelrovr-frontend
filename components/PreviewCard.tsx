@@ -1,6 +1,7 @@
 "use client";
 
 import { Download, Video, Image as ImageIcon, ExternalLink } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 interface MediaInfo {
     id: string;
@@ -24,7 +25,7 @@ export default function PreviewCard({ data, onDownload, isDownloading }: Preview
             {/* Container for media preview - adaptive height */}
             <div className="relative bg-background/50 flex justify-center items-center min-h-[300px] max-h-[60vh]">
                 <img
-                    src={`http://localhost:8000/api/proxy?url=${encodeURIComponent(data.thumbnail)}`}
+                    src={`${API_BASE_URL}/api/proxy?url=${encodeURIComponent(data.thumbnail)}`}
                     alt={data.title}
                     className="w-full h-full object-contain max-h-[60vh]"
                 />
