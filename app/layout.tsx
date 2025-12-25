@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     description: "The fastest way to download Instagram content. Free, unlimited, and no watermark.",
     type: "website",
   },
+  verification: {
+    google: "w6DkuqvO9aDRRNDBzaGHBiFSZ60HQl1qzKqqRsduFpQ",
+  },
 };
 
 export default function RootLayout({
