@@ -46,17 +46,18 @@ export default function Navbar() {
                         </button>
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center gap-4">
                         <button
                             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                             className="p-2 rounded-lg bg-card text-muted hover:text-foreground hover:bg-muted/10 transition-all border border-muted/20"
+                            aria-label="Toggle theme"
                         >
                             {mounted && theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
                         </button>
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="text-muted hover:text-foreground"
+                            aria-label="Toggle menu"
                         >
                             <Menu size={24} />
                         </button>
