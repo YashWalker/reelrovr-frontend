@@ -51,8 +51,8 @@ export default function Home() {
     setIsDownloading(true);
     try {
       // Trigger download by navigating to the proxy endpoint
-      // Ensure we have a valid filename
-      const safeName = filename ? filename.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'reelrovr-media';
+      // Ensure we have a valid filename (allow dots and hyphens)
+      const safeName = filename ? filename.replace(/[^a-z0-9.-]/gi, '_').toLowerCase() : 'reelrovr-media';
       window.location.href = getDownloadUrl(url, safeName);
     } catch (err) {
       console.error(err);
