@@ -43,16 +43,55 @@ export default function PreviewCard({ data, onDownload, isDownloading }: Preview
         setCurrentIndex((prev) => (prev === data.media.length - 1 ? 0 : prev + 1));
     };
 
+    // Touch state for swipe detection
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    // Minimum swipe distance (in px) 
+    const minSwipeDistance = 50;
+
+    // Touch Handlers
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null); // Reset
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            // Swiped Left -> Next Slide
+            handleNext();
+        }
+        if (isRightSwipe) {
+            // Swiped Right -> Previous Slide
+            handlePrev();
+        }
+    };
+
     return (
         <div className="w-full max-w-sm md:max-w-md mx-auto bg-card rounded-2xl overflow-hidden shadow-2xl border border-muted/20 animate-fade-in my-4 flex flex-col">
             {/* Carousel / Media Container */}
-            <div className="relative bg-black/5 flex justify-center items-center group aspect-[4/5] max-h-[60vh]">
+            <div
+                className="relative bg-black/5 flex justify-center items-center group aspect-[4/5] max-h-[60vh] touch-pan-y"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+            >
                 {currentMedia.type === "video" ? (
                     <video
                         src={currentMedia.url}
                         controls
                         poster={`${API_BASE_URL}/api/proxy?url=${encodeURIComponent(currentMedia.thumbnail || data.thumbnail)}`}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain pointer-events-auto"
                     />
                 ) : (
                     <img
