@@ -5,13 +5,22 @@ import InputBar from "@/components/InputBar";
 import PreviewCard from "@/components/PreviewCard";
 import { extractMedia, getDownloadUrl } from "@/lib/api";
 import { Instagram } from "lucide-react";
+import Image from "next/image";
+
+interface MediaItem {
+  type: "image" | "video";
+  url: string;
+  thumbnail?: string;
+  filename?: string;
+}
 
 interface MediaInfo {
   id: string;
   title: string;
+  description?: string;
   thumbnail: string;
-  url: string;
-  is_video: boolean;
+  is_sidecar: boolean;
+  media: MediaItem[];
 }
 
 export default function Home() {
@@ -36,13 +45,15 @@ export default function Home() {
     }
   };
 
-  const handleDownload = async () => {
-    if (!data) return;
+  const handleDownload = async (url: string, filename?: string) => {
+    if (!url) return;
 
     setIsDownloading(true);
     try {
       // Trigger download by navigating to the proxy endpoint
-      window.location.href = getDownloadUrl(data.url);
+      // Ensure we have a valid filename
+      const safeName = filename ? filename.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'reelrovr-media';
+      window.location.href = getDownloadUrl(url, safeName);
     } catch (err) {
       console.error(err);
       setError("Download failed.");
@@ -53,14 +64,18 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 transition-colors duration-300">
-      <div className="w-full max-w-4xl mx-auto text-center space-y-12">
+    <main className="w-full flex-1 flex flex-col items-center justify-center p-6 transition-colors duration-300">
+      <div className="w-full max-w-4xl mx-auto text-center space-y-12 flex-grow flex flex-col justify-center">
 
         {/* Header */}
         <div className="space-y-4 animate-fade-in-down">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="p-3 bg-primary rounded-2xl shadow-xl shadow-primary/20">
-              <Instagram size={40} className="text-white" />
+            <div className="relative w-16 h-16 rounded-2xl shadow-xl shadow-primary/20 overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="ReelRovr Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h1 className="text-5xl font-bold text-foreground tracking-tight">
               ReelRovr
@@ -85,9 +100,18 @@ export default function Home() {
           {/* Results Section */}
           <div className="min-h-[200px] flex items-center justify-center">
             {isLoading ? (
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-muted animate-pulse">Fetching media info...</p>
+              <div className="flex flex-col items-center justify-center gap-6 py-12">
+                <div className="relative w-20 h-20">
+                  <div className="absolute inset-0 border-4 border-muted/30 rounded-full"></div>
+                  <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Instagram className="text-primary animate-pulse" size={24} />
+                  </div>
+                </div>
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-medium animate-pulse">Analyzing ...</p>
+                  <p className="text-sm text-muted">This might take a moment</p>
+                </div>
               </div>
             ) : (
               <PreviewCard
@@ -102,8 +126,8 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="fixed bottom-6 text-muted text-sm">
-         ReelRovr © 2026
+      <footer className="mt-12 text-muted text-sm pb-6">
+        ReelRovr © 2026
       </footer>
     </main>
   );

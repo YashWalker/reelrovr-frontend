@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Instagram, Sun, Moon, Menu } from "lucide-react";
+import { Sun, Moon, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
     const { theme, setTheme } = useTheme();
@@ -21,8 +22,12 @@ export default function Navbar() {
 
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="p-1.5 bg-primary rounded-lg shadow-lg group-hover:shadow-primary/30 transition-shadow">
-                            <Instagram size={24} className="text-white" />
+                        <div className="relative w-10 h-10 overflow-hidden rounded-lg shadow-lg group-hover:shadow-primary/30 transition-shadow">
+                            <img
+                                src="/logo.png"
+                                alt="ReelRovr Logo"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                         <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
                             ReelRovr
